@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""APPS metric for the evaluation of code generation"""
+"""Evaluation of code generation on the APPS benchmark"""
 
 import evaluate
 import datasets
