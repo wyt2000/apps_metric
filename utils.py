@@ -23,11 +23,10 @@ def evaluate_generations(generations, level=["all"]):
 
     # generations are code generations in the same order of the dataset
     apps_eval = load_dataset(DATASET, split="test", difficulties=level)
-    gpt_codes = generations
     results = {}
     for index in range(len(generations)):
         print(f"task {index}")
-        generated_code = gpt_codes[index]
+        generated_code = generations[index]
         sample = apps_eval[index]
         res = []
         # loop over the generations
