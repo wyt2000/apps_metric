@@ -15,81 +15,67 @@
 
 import evaluate
 import datasets
+from utils import compute_metrics
 
 
-# TODO: Add BibTeX citation
 _CITATION = """\
-@InProceedings{huggingface:module,
-title = {A great new module},
-authors={huggingface, Inc.},
-year={2020}
+@article{hendrycksapps2021,
+  title={Measuring Coding Challenge Competence With APPS},
+  author={Dan Hendrycks and Steven Basart and Saurav Kadavath and Mantas Mazeika and Akul Arora and Ethan Guo and Collin Burns and Samir Puranik and Horace He and Dawn Song and Jacob Steinhardt},
+  journal={NeurIPS},
+  year={2021}
 }
 """
 
-# TODO: Add description of the module here
+
 _DESCRIPTION = """\
-This new module is designed to solve this great ML task and is crafted with a lot of care.
+This is a metric to evaluate code generation using the APPS benchmark "Measuring Coding Challenge Competence With
+APPS" (https://arxiv.org/pdf/2105.09938.pdf).
 """
 
 
 # TODO: Add description of the arguments of the module here
 _KWARGS_DESCRIPTION = """
-Calculates how good are predictions given some references, using certain scores
+Computes Average accuracy and strict accuracy for single generations, and pass@k for multiple generations.
 Args:
-    predictions: list of predictions to score. Each predictions
-        should be a string with tokens separated by spaces.
-    references: list of reference for each prediction. Each
-        reference should be a string with tokens separated by spaces.
-Returns:
-    accuracy: description of the first score,
-    another_score: description of the second score,
-Examples:
-    Examples should be written in doctest format, and should illustrate how
-    to use the function.
+    predictions: list of code generations to score. It's a list of list(s), each corresponding to a problem from APPS dataset.
 
-    >>> my_new_module = evaluate.load("my_new_module")
-    >>> results = my_new_module.compute(references=[0, 1], predictions=[0, 1])
+Returns:
+    metrics: dict of three metrics: average accuracy, stric accuracy, and pass@k.
+Examples:
+    >>> my_new_module = evaluate.load("loubnabnl/apps-metric")
+    >>> results = my_new_module.compute(references=["s=inpu()\nprint(s)"])
     >>> print(results)
-    {'accuracy': 1.0}
+    {'avg_accuracy': 0, 'strict_accuracy': 0, 'pass_at_k': None}
 """
 
-# TODO: Define external resources urls if needed
-BAD_WORDS_URL = "http://url/to/external/resource/bad_words.txt"
+
 
 
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class apps-metric(evaluate.EvaluationModule):
-    """TODO: Short description of my evaluation module."""
+    """Evaluate code generation on APPS benchmark. 
+    The generations are compiled and their corresponding unit tests are run"""
 
     def _info(self):
-        # TODO: Specifies the evaluate.EvaluationModuleInfo object
+
         return evaluate.EvaluationModuleInfo(
-            # This is the description that will appear on the modules page.
+
             module_type="metric",
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
-            # This defines the format of each prediction and reference
+
             features=datasets.Features({
-                'predictions': datasets.Value('int64'),
-                'references': datasets.Value('int64'),
+                'predictions': datasets.Sequence(datasets.Value("string")),
             }),
-            # Homepage of the module for documentation
-            homepage="http://module.homepage",
-            # Additional links to the codebase or references
-            codebase_urls=["http://github.com/path/to/codebase/of/new_module"],
-            reference_urls=["http://path.to.reference.url/new_module"]
+            homepage="https://github.com/hendrycks/apps",
+            reference_urls=["https://huggingface.co/datasets/codeparrot/apps"]
         )
 
-    def _download_and_prepare(self, dl_manager):
-        """Optional: download external resources useful to compute the scores"""
-        # TODO: Download external resources if needed
-        pass
 
-    def _compute(self, predictions, references):
+
+    def _compute(self, generations, k_list=[1, 10, 100], count_errors=True, level=["all"]):
         """Returns the scores"""
-        # TODO: Compute the different scores of the module
-        accuracy = sum(i == j for i, j in zip(predictions, references)) / len(predictions)
-        return {
-            "accuracy": accuracy,
-        }
+        metrics = compute_metrics(generations, k_list=k_list, count_errors=count_errors, level=level)
+        return metrics
