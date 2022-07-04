@@ -44,7 +44,7 @@ Returns:
     metrics: dict of three metrics: average accuracy, stric accuracy, and pass@k.
 Examples:
     >>> my_new_module = evaluate.load("loubnabnl/apps_metric")
-    >>> results = my_new_module.compute(references=["s=inpu()\nprint(s)"])
+    >>> results = my_new_module.compute(references=[["s=input()\nprint(s)"]])
     >>> print(results)
     {'avg_accuracy': 0, 'strict_accuracy': 0, 'pass_at_k': None}
 """
@@ -75,7 +75,7 @@ class apps_metric(evaluate.EvaluationModule):
 
 
 
-    def _compute(self, generations, k_list=[1, 10, 100], count_errors=True, level=["introductory"]):
+    def _compute(self, predictions, k_list=[1, 10, 100], count_errors=True, level="all"):
         """Returns the scores"""
-        metrics = compute_metrics(generations, k_list=k_list, count_errors=count_errors, level=level)
+        metrics = compute_metrics(predictions, k_list=k_list, count_errors=count_errors, level=level)
         return metrics
