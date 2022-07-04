@@ -60,8 +60,6 @@ def run_test(sample, test=None, debug=False):
     except ValueError:
         in_outs = None
     if in_outs:
-        #if debug:
-        #    print(f"test cases json = {in_outs['inputs']} {in_outs['outputs']}")
         if in_outs.get("fn_name") is None:
             which_type = CODE_TYPE.standard_input  # Standard input
             method_name = None
@@ -72,8 +70,6 @@ def run_test(sample, test=None, debug=False):
     if debug:
         print(f"loaded input_output = {datetime.now().time()}")
  
-    #else:
-    #    continue
     if test is None:
         return in_outs
     elif test is not None:
@@ -96,7 +92,8 @@ def run_test(sample, test=None, debug=False):
                 signal.alarm(0)
             except Exception as e:
                 signal.alarm(0)
-                print(f"type 0 compilation error = {e}")
+                if debug:
+                     print(f"type 0 compilation error = {e}")
                 results.append(-2)
                 return results
             signal.alarm(0)
@@ -138,7 +135,8 @@ def run_test(sample, test=None, debug=False):
                 signal.alarm(0)
             except Exception as e:
                 signal.alarm(0)
-                print(f"type 1 compilation error = {e}")
+                if debug:
+                    print(f"type 1 compilation error = {e}")
                 results.append(-2)
                 return results
             signal.alarm(0)
@@ -205,8 +203,8 @@ def run_test(sample, test=None, debug=False):
                     continue
                 faulthandler.disable()
                 signal.alarm(0)
-                #if debug:
-                    #print(f"outputs = {output}, test outputs = {in_outs['outputs'][index]}, inputs = {inputs}, {type(inputs)}, {output == [in_outs['outputs'][index]]}")
+                if debug:
+                    print(f"outputs = {output}, test outputs = {in_outs['outputs'][index]}, inputs = {inputs}, {type(inputs)}, {output == [in_outs['outputs'][index]]}")
             elif which_type == CODE_TYPE.standard_input:  # Standard input
                 faulthandler.enable()
                 signal.alarm(timeout)
@@ -216,16 +214,14 @@ def run_test(sample, test=None, debug=False):
                     inputs = "\n".join(inputs)
                 if isinstance(in_outs['outputs'][index], list):
                     in_outs['outputs'][index] = "\n".join(in_outs['outputs'][index])
+
                 with Capturing() as output:
                     try:
-                        print("doing call")
                         call_method(method, inputs)
-                        print("call done")
                         # reset the alarm
                         signal.alarm(0)
                         passed = True
                     except Exception as e:
-                        print("call not done we are in exception")
                         # runtime error or took too long
                         signal.alarm(0)
                         print(f"Call-based runtime error or time limit exceeded error = {repr(e)}{e}")
@@ -261,7 +257,8 @@ def run_test(sample, test=None, debug=False):
                         if isinstance(output[0], str):
                             tmp_result = tmp_result or ([e.strip() for e in output] == in_outs["outputs"][index])
                 except Exception as e:
-                    print(f"Failed check1 exception = {e}")
+                    if debug:
+                        print(f"Failed check1 exception = {e}")
                     pass
 
                 if tmp_result == True:  
@@ -283,7 +280,8 @@ def run_test(sample, test=None, debug=False):
                     if isinstance(in_outs["outputs"][index], list):
                         tmp_result = tmp_result or (output == in_outs["outputs"][index])
                 except Exception as e:
-                    print(f"Failed check2 exception = {e}")
+                    if debug:
+                        print(f"Failed check2 exception = {e}")
                     pass
 
                 if tmp_result == True:
@@ -310,7 +308,8 @@ def run_test(sample, test=None, debug=False):
                     if isinstance(in_outs["outputs"][index], list):
                         tmp_result = tmp_result or (output == in_outs["outputs"][index])
                 except Exception as e:
-                    print(f"Failed check3 exception = {e}")
+                    if debug:
+                        print(f"Failed check3 exception = {e}")
                     pass
 
                 try:
@@ -341,7 +340,8 @@ def run_test(sample, test=None, debug=False):
                 try:
                     tmp_result = (output == in_outs["outputs"][index])
                 except Exception as e:
-                    print(f"Failed check4 exception = {e}")
+                    if debug:
+                        print(f"Failed check4 exception = {e}")
                     continue
 
                 if tmp_result == True:
@@ -363,7 +363,8 @@ def run_test(sample, test=None, debug=False):
                 try:
                     tmp_result = (set(frozenset(s) for s in output) == set(frozenset(s) for s in in_outs["outputs"][index]))
                 except Exception as e:
-                    print(f"Failed check5 exception = {e}")
+                    if debug:
+                        print(f"Failed check5 exception = {e}")
 
 
                 # if they are all numbers, round so that similar numbers are treated as identical
@@ -371,7 +372,8 @@ def run_test(sample, test=None, debug=False):
                     tmp_result = tmp_result or (set(frozenset(round(float(t),3) for t in s) for s in output) ==\
                         set(frozenset(round(float(t),3) for t in s) for s in in_outs["outputs"][index]))
                 except Exception as e:
-                    print(f"Failed check6 exception = {e}")
+                    if debug:
+                        print(f"Failed check6 exception = {e}")
                 
                 if tmp_result == True and debug:
                     print("PASSED")
@@ -384,9 +386,10 @@ def run_test(sample, test=None, debug=False):
                         print(f"output = {output}, test outputs = {in_outs['outputs'][index]}, inputs = {inputs.replace(nl,' new-line ')}, {type(inputs)}, {output == [in_outs['outputs'][index]]}")
                     else:
                         print(f"output = {output}, test outputs = {in_outs['outputs'][index]}, inputs = {inputs}, {type(inputs)}, {output == [in_outs['outputs'][index]]}") 
-                    
+
 
     return results
+
 
 def custom_compare_(output, ground_truth):
     
@@ -432,3 +435,4 @@ def call_method(method, inputs):
         finally:
             pass
     return _inner_call_method(method) 
+
