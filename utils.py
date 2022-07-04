@@ -2,7 +2,7 @@ import itertools
 import numpy as np
 from typing import Dict
 from datasets import load_dataset
-import testing_util as test_util
+import .testing_util as test_util
 
 
 DATASET = "codeparrot/apps"
