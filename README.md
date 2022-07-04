@@ -21,12 +21,12 @@ This metric is used to evaluate code generation on the [APPS benchmark](https://
 You can load the metric and use it with the following commands:
 ```
 from evaluate import load
-glue_metric = load('loubnabnl/apps_metric')
+apps_metric = load('loubnabnl/apps_metric')
 results = apps_metric.compute(predictions=generations)
 ```
 
 ### Inputs
-**generations** (list(str)): List of code generations, each sub-list corresponds to the generation for a problem in APPS dataset, the order of the samples in the dataset must be kept.
+**generations** list(list(str)): List of code generations, each sub-list corresponds to the generations for a problem in APPS dataset, the order of the samples in the dataset must be kept (with respect to the difficulty level).
 
 ### Output Values
 
