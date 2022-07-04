@@ -15,7 +15,7 @@
 
 import evaluate
 import datasets
-from tools.utils import compute_metrics
+from utils import compute_metrics
 
 
 _CITATION = """\
