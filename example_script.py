@@ -1,13 +1,13 @@
 """This is an example script to evaluate a code generation model on APPS, you can also use the APPS solutions as code generations
->>> python example_script.py --model_ckpt MODEL_NAME --num_tasks 10 --difficulty introductory --n_samples 1
->>> python example_script.py --use_solutions True --num_tasks 10 --difficulty introductory --n_samples 1"""
+> python example_script.py --model_ckpt MODEL_NAME --num_tasks 10 --difficulty introductory --n_samples 1
+> python example_script.py --use_solutions True --num_tasks 10 --difficulty introductory --n_samples 1"""
 
 import json
 import pprint
 from tqdm import tqdm
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, set_seed
-from tools.utils import compute_metrics
+from .utils import compute_metrics
 
 def generate_prompt(sample):
     starter_code = None if len(sample["starter_code"]) == 0 else sample["starter_code"] 
