@@ -75,7 +75,7 @@ class apps_metric(evaluate.EvaluationModule):
 
 
 
-    def _compute(self, generations, k_list=[1, 10, 100], count_errors=True, level=["all"]):
+    def _compute(self, generations, k_list=[1, 10, 100], count_errors=True, level=["introductory"]):
         """Returns the scores"""
         metrics = compute_metrics(generations, k_list=k_list, count_errors=count_errors, level=level)
         return metrics
