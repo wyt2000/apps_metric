@@ -7,7 +7,7 @@ import pprint
 from tqdm import tqdm
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline, set_seed
-from .utils import compute_metrics
+from evaluate import load
 
 def generate_prompt(sample):
     starter_code = None if len(sample["starter_code"]) == 0 else sample["starter_code"] 
@@ -91,11 +91,12 @@ def main(args):
         tokenizer = AutoTokenizer.from_pretrained(args.tokenizer)
         model = AutoModelForCausalLM.from_pretrained(args.model_ckpt)
         generations = make_generations(dataset, args, model, tokenizer)
-    
-    metrics = compute_metrics(generations, level=args.difficulty, k_list=args.k_list, count_errors=args.count_errors, debug=args.debug)
-    print(metrics)
+        
+    metric = load("loubnabnl/apps_metric")
+    results = metric.compute(predictions=generations, level=args.difficulty, k_list=args.k_list, count_errors=args.count_errors, debug=args.debug)
+    print(results)
     with open(args.output_file, "w") as fp:
-        json.dump(metrics, fp)
+        json.dump(results, fp)
 
 
 if __name__ == "__main__":
