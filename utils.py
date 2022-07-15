@@ -2,7 +2,7 @@ import itertools
 import numpy as np
 from typing import Dict
 from datasets import load_dataset
-from .testing_util import run_test
+import testing_util as test_util
 
 
 DATASET = "codeparrot/apps"
@@ -34,7 +34,7 @@ def evaluate_generations(generations: list, level: str = "all", debug: bool = Fa
         for o_idx, o in enumerate(problem_generations):
             curr_res = [-2]
             try:
-                curr_res = run_test(sample, test=o, debug=debug)
+                curr_res = test_util.run_test(sample, test=o, debug=debug)
                 if debug:
                     print(f"\nSuccessful compilation of task {index}!")
                 fixed = []
