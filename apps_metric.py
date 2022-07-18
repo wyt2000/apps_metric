@@ -44,7 +44,7 @@ Returns:
     metrics: dict of three metrics: average accuracy, stric accuracy, and pass@k.
 Examples:
     >>> my_new_module = evaluate.load("loubnabnl/apps_metric")
-    >>> results = my_new_module.compute(references=[["s=input()\nprint(s)"]])
+    >>> results = my_new_module.compute(predictions=[["s=input()\nprint(s)"]])
     >>> print(results)
     {'avg_accuracy': 0, 'strict_accuracy': 0, 'pass_at_k': None}
 """
