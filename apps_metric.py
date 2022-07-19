@@ -16,6 +16,7 @@
 import evaluate
 import datasets
 from .utils import compute_metrics
+import testing_util
 
 
 _CITATION = """\
