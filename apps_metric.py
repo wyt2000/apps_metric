@@ -16,7 +16,7 @@
 import evaluate
 import datasets
 from .utils import compute_metrics
-from .testing_util import run_test
+#from .testing_util import run_test
 
 
 _CITATION = """\
