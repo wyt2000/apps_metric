@@ -33,7 +33,7 @@ def evaluate_generations(generations: list, level: str = "all", debug: bool = Fa
         for o_idx, o in enumerate(problem_generations):
             curr_res = [-2]
             try:
-                curr_res = test_util.run_test(sample, test=o, debug=debug)
+                curr_res = run_test(sample, test=o, debug=debug)
                 if debug:
                     print(f"\nSuccessful compilation of task {index}!")
                 fixed = []
