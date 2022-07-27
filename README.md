@@ -21,7 +21,7 @@ This metric is used to evaluate code generation on the [APPS benchmark](https://
 You can load the metric and use it with the following commands:
 ```
 from evaluate import load
-apps_metric = load('loubnabnl/apps_metric')
+apps_metric = load('codeparrot/apps_metric')
 results = apps_metric.compute(predictions=generations)
 ```
 
