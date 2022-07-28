@@ -26,7 +26,7 @@ results = apps_metric.compute(predictions=generations)
 ```
 
 ### Inputs
-**generations** list(list(str)): List of code generations, each sub-list corresponds to the generations for a problem in APPS dataset, the order of the samples in the dataset must be kept (with respect to the difficulty level).
+**generations** list(list(str)): List of code generations, each sub-list corresponds to the generations for a problem in APPS dataset, **the order of the samples in the dataset must be kept (with respect to the difficulty level)**.
 
 ### Output Values
 
