@@ -1,11 +1,35 @@
 import itertools
+import json
+import multiprocessing
 import numpy as np
 from typing import Dict
 from datasets import load_dataset
 from .testing_util import run_test
 
 DATASET = "codeparrot/apps"
+TIMEOUT = 10
 
+def check_correctness(sample, generation, timeout, debug=True):
+    """Check correctness of code generation with a global timeout.
+    The global timeout is to catch some extreme/rare cases not handled by the timeouts
+    inside `run_test`"""
+    def _temp_run(sample, generation, debug, result):
+        result.append(run_test(sample, test=generation, debug=debug))
+
+    manager = multiprocessing.Manager()
+    result = manager.list()
+    p = multiprocessing.Process(target=_temp_run, args=(sample, generation, debug, result))
+    p.start()
+    p.join(timeout=timeout + 1)
+    if p.is_alive():
+        p.kill()
+    if not result:
+        in_outs = json.loads(sample["input_output"])
+        # consider that all tests failed
+        result = [[-1 for i in range(len(in_outs["inputs"]))]]
+        if debug:
+            print(f"global timeout")
+    return result[0]
 
 def evaluate_generations(generations: list, level: str = "all", debug: bool = False):
     """We take the list of code generations and try to compile them
