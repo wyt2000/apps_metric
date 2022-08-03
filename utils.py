@@ -31,6 +31,7 @@ def check_correctness(sample, generation, timeout, debug=True):
             print(f"global timeout")
     return result[0]
 
+
 def evaluate_generations(generations: list, level: str = "all", debug: bool = False):
     """We take the list of code generations and try to compile them
      and the run their corresponding unit tests which are retrieved from the APPS dataset.
@@ -57,7 +58,7 @@ def evaluate_generations(generations: list, level: str = "all", debug: bool = Fa
         for o_idx, o in enumerate(problem_generations):
             curr_res = [-2]
             try:
-                curr_res = run_test(sample, test=o, debug=debug)
+                curr_res = check_correctness(sample, o, timeout=TIMEOUT, debug=debug)
                 if debug:
                     print(f"\nSuccessful compilation of task {index}!")
                 fixed = []
@@ -207,5 +208,5 @@ def compute_metrics(generations, level="all", k_list=[1, 10, 100], count_errors=
     metrics = get_results(results, count_errors=count_errors, k_list=k_list)
     return metrics
 
-#import doctest
-#doctest.testmod()
+# import doctest
+# doctest.testmod()
