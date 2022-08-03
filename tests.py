@@ -6,7 +6,7 @@ solution_sample2 = json.load(open("test_examples/solutions_problem_2.json", "r")
 single_solutions = [solution_sample1[:1], solution_sample2[:1]]
 multiple_solutions = [solution_sample1[:3], solution_sample2[:3]]
 
-metric = load("loubnabnl/apps_metric")
+metric = load("codeparrot/apps_metric")
 result_1 = metric.compute(predictions=single_solutions, level="all")
 result_2 = metric.compute(predictions=multiple_solutions, level="all", k_list=[1, 2, 3])
 
