@@ -70,8 +70,8 @@ def evaluate_generations(generations: list, level: str = "all", debug: bool = Fa
                     fixed.append(e)
                 curr_res = fixed
                 if not np.all(curr_res):
-                    #if debug:
-                    print(f"Results were not True for all test cases")
+                    if debug:
+                        print(f"Results were not True for all test cases")
             except Exception as e:
                 if debug:
                     print(f"Compilation failed, test framework exception = {repr(e)}{e}\n")
