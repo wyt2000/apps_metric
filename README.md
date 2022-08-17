@@ -1,5 +1,5 @@
 ---
-title: apps_metric
+title: APPS Metric
 datasets:
 -  
 tags:
