@@ -2,7 +2,7 @@
 title: APPS Metric
 emoji: 📊
 colorFrom: pink
-colorTo: green
+colorTo: blue
 datasets:
 -  
 tags:
