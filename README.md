@@ -1,8 +1,8 @@
 ---
 title: APPS Metric
 emoji: 📊
-colorFrom: orange
-colorTo: purple
+colorFrom: pink
+colorTo: green
 datasets:
 -  
 tags:
