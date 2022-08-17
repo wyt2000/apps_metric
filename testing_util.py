@@ -153,6 +153,7 @@ def run_test(sample, test=None, debug=False):
             signal.alarm(0)
             e = sys.exc_info()
             print(f"unable to get function error = {e}")
+            results.append(-2)
             return results
 
         for index, inputs in enumerate(in_outs["inputs"]):
