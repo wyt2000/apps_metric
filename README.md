@@ -22,10 +22,12 @@ This metric is used to evaluate code generation on the [APPS benchmark](https://
 
 ## How to Use
 You can load the metric and use it with the following commands:
-```
+
+```python
 from evaluate import load
 apps_metric = load('codeparrot/apps_metric')
-results = apps_metric.compute(predictions=generations)
+# to evaluate generations made for all levels for example
+results = apps_metric.compute(predictions=generations, level="all")
 ```
 
 ### Inputs
