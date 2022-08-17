@@ -1,5 +1,6 @@
 ---
 title: APPS Metric
+emoji: 📊
 datasets:
 -  
 tags:
