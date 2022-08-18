@@ -15,7 +15,7 @@ app_file: app.py
 pinned: false
 ---
 
-# Metric Card for apps-metric [WIP]
+# Metric Card for apps_metric 
 
 ## Metric Description
 This metric is used to evaluate code generation on the [APPS benchmark](https://huggingface.co/datasets/codeparrot/apps).
