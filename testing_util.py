@@ -203,7 +203,8 @@ def run_test(sample, test=None, debug=False):
                 except Exception as e:
                     signal.alarm(0)
                     faulthandler.disable()
-                    print(f"Standard input runtime error or time limit exceeded error = {e}")
+                    if debug:
+                        print(f"Standard input runtime error or time limit exceeded error = {e}")
                     results.append(-1)
                     continue
                 faulthandler.disable()
