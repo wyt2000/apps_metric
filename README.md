@@ -3,8 +3,6 @@ title: APPS Metric
 emoji: 📊
 colorFrom: blue
 colorTo: pink
-datasets:
--  
 tags:
 - evaluate
 - metric
