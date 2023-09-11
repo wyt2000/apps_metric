@@ -52,7 +52,8 @@ def evaluate_generations(problem_ids: list, generations: list, debug: bool = Fal
         # code generations for problem (index)
         problem_generations = generations[index]
         # get corresponding samples from APPS dataset
-        sample = apps_eval[problem_ids[index]]
+        problem_id = problem_ids[index]
+        sample = apps_eval[problem_id]
         res = []
         # loop over the generations
         for o_idx, o in enumerate(problem_generations):
@@ -69,9 +70,10 @@ def evaluate_generations(problem_ids: list, generations: list, debug: bool = Fal
                         e = bool(e)
                     fixed.append(e)
                 curr_res = fixed
-                if not np.all(curr_res):
+                if np.all([res == True for res in curr_res]):
                     if debug:
-                        print(f"Results were not True for all test cases")
+                        print("Accepted!!!")
+                        print(f"problem_id: {problem_id}, code_id: {o_idx}")
             except Exception as e:
                 if debug:
                     print(f"Compilation failed, test framework exception = {repr(e)}{e}\n")
