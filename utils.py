@@ -32,7 +32,7 @@ def check_correctness(sample, generation, timeout, debug=True):
     return result[0]
 
 
-def evaluate_generations(generations: list, level: str = "all", debug: bool = False):
+def evaluate_generations(problem_ids: list, generations: list, debug: bool = False):
     """We take the list of code generations and try to compile them
      and the run their corresponding unit tests which are retrieved from the APPS dataset.
 
@@ -46,13 +46,13 @@ def evaluate_generations(generations: list, level: str = "all", debug: bool = Fa
      """
 
     # generations are code generations in the same order of the dataset
-    apps_eval = load_dataset(DATASET, split="test", difficulties=[level])
+    apps_eval = load_dataset(DATASET, split="test", difficulties=["all"])
     results = {}
     for index in range(len(generations)):
         # code generations for problem (index)
         problem_generations = generations[index]
         # get corresponding samples from APPS dataset
-        sample = apps_eval[index]
+        sample = apps_eval[problem_ids[index]]
         res = []
         # loop over the generations
         for o_idx, o in enumerate(problem_generations):
@@ -173,7 +173,7 @@ def get_results(results: Dict[int, list], count_errors: bool = False, k_list: li
         metrics["pass_at_k"] = pass_at_k
     return metrics
 
-def compute_metrics(generations, level="all", k_list=[1, 10, 100], count_errors=True, debug=False):
+def compute_metrics(problem_ids, generations, k_list=[1, 10, 100], count_errors=True, debug=False):
     """Return metrics for the given generations.
     Args:
         generations: list of code generations for each problem (each generation is a list of generations)
@@ -204,7 +204,7 @@ def compute_metrics(generations, level="all", k_list=[1, 10, 100], count_errors=
     {'pass@1': 1.0, 'pass@2': 1.0, 'pass@3': 1.0}
     {'avg_accuracy': None, 'strict_accuracy': None, 'pass_at_k': {'pass@1': 1.0, 'pass@2': 1.0, 'pass@3': 1.0}}
     """
-    results = evaluate_generations(generations, level=level, debug=debug)
+    results = evaluate_generations(problem_ids, generations, debug=debug)
     metrics = get_results(results, count_errors=count_errors, k_list=k_list)
     return metrics
 

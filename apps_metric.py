@@ -76,7 +76,7 @@ class apps_metric(evaluate.EvaluationModule):
 
 
 
-    def _compute(self, predictions, k_list=[1, 10, 100], count_errors=True, level="all", debug=False):
+    def _compute(self, problem_ids, predictions, k_list=[1, 10, 100], count_errors=True, debug=False):
         """Returns the scores"""
-        metrics = compute_metrics(predictions, k_list=k_list, count_errors=count_errors, level=level, debug=debug)
+        metrics = compute_metrics(problem_ids, predictions, k_list=k_list, count_errors=count_errors, debug=debug)
         return metrics
